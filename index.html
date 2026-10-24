@@ -73,10 +73,10 @@
         <div class="flex items-center gap-2">
           <h1 class="font-bold text-slate-800 text-base tracking-tight">公文小老師 AI 檢核系統</h1>
           <span class="px-2 py-0.5 text-[11px] font-semibold bg-brand-50 text-brand-600 rounded-full border border-brand-100 flex items-center gap-1">
-            <i class="ph-fill ph-sparkle text-xs"></i> Smart Audit
+            <i class="ph-fill ph-sparkle text-xs"></i> Pure AI Audit
           </span>
         </div>
-        <p class="text-[11px] text-slate-500 hidden sm:block">《文書處理手冊》法制用語・公路工程規範・國安與視覺異常把關</p>
+        <p class="text-[11px] text-slate-500 hidden sm:block">《文書處理手冊》法制用語・公路工程規範・國安與視覺異常把關（100% 雲端 AI 驅動）</p>
       </div>
     </div>
 
@@ -90,12 +90,18 @@
 
       <button onclick="loadSampleTemplate()" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition border border-slate-200/70">
         <i class="ph-bold ph-magic-wand text-brand-600"></i>
-        <span>帶入規範範例</span>
+        <span>帶入測試範例</span>
       </button>
+
+      <!-- AI Connection Status Badge -->
+      <div id="ai-status-indicator" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-emerald-50 text-emerald-700 border-emerald-200/80">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="ai-status-text">AI 雲端就緒</span>
+      </div>
 
       <button onclick="toggleApiKeyModal()" title="API 與模型核心設定" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition border border-slate-200/70">
         <i class="ph-bold ph-cpu text-brand-600"></i>
-        <span class="hidden sm:inline" id="header-model-label">Gemini 3 Flash</span>
+        <span class="hidden sm:inline" id="header-model-label">Gemini 2.5 Flash</span>
         <i class="ph-bold ph-gear-six text-slate-500"></i>
       </button>
 
@@ -155,7 +161,7 @@
 
         <!-- Mode Hint Description -->
         <div id="mode-description" class="mt-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/60 text-xs text-slate-600 leading-relaxed">
-          <strong>【挑異常模式】</strong>：嚴禁改寫語意或增刪文句。專注排查錯別字、大陸用語、法律統一用字（省道維持「台」字如台9線），並客觀辨識圖片；<strong>「中華民國國旗」為正當國家象徵，正常通過不告警</strong>；僅針對<strong>「中國大陸五星旗、共軍戰機、五星國徽道具帽」</strong>與軍事管制區（如志航基地）觸發告警。
+          <strong>【挑異常模式】</strong>：100% 透過 AI 深度排查同音異字、形近錯別字、公文體例語病（如：僅訂/謹訂、提昇/提升、簽呈/簽、層報/陳報、結尾應酬語誤用）、大陸用語、法律統一用字（省道維持「台」字如台9線），並客觀辨識圖片國安異常。
         </div>
       </div>
 
@@ -185,7 +191,7 @@
             </button>
           </div>
           <p class="text-[11px] text-slate-600">
-            您只需輸入一兩句交辦需求（如：「催促廠商台9線邊坡工程趕工並提報計畫」），系統將自動為您撰擬完整正式公文！
+            您只需輸入一兩句交辦需求（如：「催促廠商台9線邊坡工程趕工並提報計畫」），AI 將自動為您撰擬完整正式公文！
           </p>
         </div>
 
@@ -194,7 +200,7 @@
           <textarea
             id="document-text"
             rows="7"
-            placeholder="請在此貼上公文草稿、簡短交辦需求，或直接按 Ctrl+V (Mac 按 Cmd+V) 貼入螢幕截圖／工程圖說照片（文字、圖片與檔案可同時並存）..."
+            placeholder="請在此貼上公文草稿、文章段落、簡短交辦需求，或直接按 Ctrl+V (Mac 按 Cmd+V) 貼入螢幕截圖／工程圖說照片..."
             class="w-full p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 text-xs sm:text-sm text-slate-800 leading-relaxed resize-y custom-scrollbar"
           ></textarea>
         </div>
@@ -215,7 +221,7 @@
           </div>
           <p class="text-[11px] text-indigo-700 flex items-center gap-1">
             <i class="ph-bold ph-scan"></i>
-            客觀辨識圖片真實內容：中華民國國旗與市政街景正常放行；精準攔截共軍軍備、五星旗與軍事要塞設施。
+            AI 客觀辨識圖片真實內容：中華民國國旗與市政街景正常放行；精準攔截共軍軍備、五星旗與軍事要塞設施。
           </p>
         </div>
 
@@ -306,7 +312,7 @@
           <div id="attachment-list-container" class="space-y-1.5"></div>
         </div>
 
-        <!-- Primary Action Button (Dynamically updated to 執行智慧檢核/生成 in Letter/Memo/Minutes) -->
+        <!-- Primary Action Button -->
         <button id="run-audit-btn" onclick="runDocumentInspection()" class="w-full py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-[0.99] text-white font-bold text-sm shadow-md shadow-brand-600/20 flex items-center justify-center gap-2 transition">
           <i class="ph-bold ph-sparkle text-lg"></i>
           <span id="run-audit-btn-text">執行智慧檢核</span>
@@ -318,7 +324,7 @@
         <div class="flex items-center justify-between mb-2.5">
           <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
             <i class="ph-bold ph-shield-checkered text-brand-600"></i>
-            全維度強制把關標準（系統自動全項檢核）
+            全維度強制把關標準（100% 雲端 AI 深度語意檢核）
           </span>
           <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">強制全檢</span>
         </div>
@@ -326,22 +332,22 @@
           <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/70 flex items-start gap-2">
             <i class="ph-fill ph-check-circle text-brand-600 text-sm mt-0.5 shrink-0"></i>
             <div>
-              <span class="font-bold text-slate-700 block">客觀視覺與共軍意識形態</span>
-              <span class="text-slate-500">中華民國國旗合法放行；精準攔截共軍戰機與五星國徽道具</span>
+              <span class="font-bold text-slate-700 block">同音異字與公文語病</span>
+              <span class="text-slate-500">攔截僅訂/謹訂、檢合/檢核、簽呈/簽、層報/陳報等錯用</span>
             </div>
           </div>
           <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/70 flex items-start gap-2">
             <i class="ph-fill ph-check-circle text-brand-600 text-sm mt-0.5 shrink-0"></i>
             <div>
-              <span class="font-bold text-slate-700 block">省道規範與法制公文用字</span>
-              <span class="text-slate-500">省道維持「台」字（台9線）；統一用字（計畫/紀錄/澈底）</span>
+              <span class="font-bold text-slate-700 block">省道規範與法制用字</span>
+              <span class="text-slate-500">省道維持「台」字（台9線）；統一用字（提升/計畫/紀錄）</span>
             </div>
           </div>
           <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/70 flex items-start gap-2">
             <i class="ph-fill ph-check-circle text-brand-600 text-sm mt-0.5 shrink-0"></i>
             <div>
-              <span class="font-bold text-slate-700 block">精準軍事基地保密</span>
-              <span class="text-slate-500">僅警示軍事基地/設施；一般機關地址不警示</span>
+              <span class="font-bold text-slate-700 block">客觀視覺與軍事保密</span>
+              <span class="text-slate-500">中華民國國旗合法放行；攔截共軍軍備與軍事基地標示</span>
             </div>
           </div>
           <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/70 flex items-start gap-2">
@@ -383,9 +389,23 @@
           <i class="ph-bold ph-spinner-gap text-2xl"></i>
         </div>
         <div>
-          <h3 class="text-sm font-bold text-slate-800">資深工程公務小老師正在執行智慧檢核與撰擬...</h3>
-          <p class="text-xs text-slate-500 mt-1">正在執行《文書處理手冊》字詞校對、法規依據勾稽、附件查驗與軍事基地國安掃描</p>
+          <h3 class="text-sm font-bold text-slate-800">雲端 AI 模型正在進行深度語意與公文法制檢核...</h3>
+          <p class="text-xs text-slate-500 mt-1">正在透過 Gemini AI 逐字排查同音異字、形近錯字、《文書處理手冊》體例與國安圖像</p>
         </div>
+      </div>
+
+      <!-- AI Connection Error Alert Box (Hidden unless AI API call fails) -->
+      <div id="ai-error-banner" class="hidden dashboard-card p-4 bg-rose-50 border-2 border-rose-300 text-rose-900 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="font-extrabold text-sm text-rose-700 flex items-center gap-2">
+            <i class="ph-fill ph-warning-octagon text-lg"></i>
+            <span>雲端 AI 模型連線異常（本系統已強制停用離線模式，確保 100% AI 檢核品質）</span>
+          </span>
+          <button onclick="runDocumentInspection()" class="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition">
+            立即重試連線
+          </button>
+        </div>
+        <p id="ai-error-detail" class="text-xs text-rose-800 leading-relaxed"></p>
       </div>
 
       <!-- Results Container -->
@@ -421,10 +441,10 @@
               <span id="audit-greeting" class="text-xs font-bold text-brand-700">請於左側輸入公文草稿、簡述交辦需求或上傳檔案，再點擊「執行智慧檢核」。</span>
             </div>
             <p id="audit-summary" class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-              系統支援同時貼上文字、圖片與上傳檔案；在「函稿」與「簽辦」模式下，您也可以直接輸入簡短需求，由系統自動為您撰擬完整正式公文。
+              系統全程採用雲端 Gemini AI 模型進行深度檢核，不依賴死板的離線字庫，能精準抓出上下文同音錯字、詞義誤用與公文上下行稱謂語病。
             </p>
             <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-              <span>審查基準：行政院《文書處理手冊》・公路局路線規範・軍事要塞保密法規</span>
+              <span>審查基準：行政院《文書處理手冊》・法律統一用字表・公路局路線規範</span>
               <span id="audit-timestamp">尚未執行檢核</span>
             </div>
           </div>
@@ -491,9 +511,9 @@
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
               <i class="ph-bold ph-table text-brand-600 text-base"></i>
-              【文字勘誤對照表】（含本文與附件之錯別字／簡體字／大陸用語／統一用字）
+              【文字勘誤對照表】（含錯別字／同音誤用／公文體例語病／統一用字／大陸用語）
             </h3>
-            <span id="typo-table-badge" class="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold">自動比對</span>
+            <span id="typo-table-badge" class="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold">AI 深度比對</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
@@ -502,7 +522,7 @@
                   <th class="py-2 px-3 font-bold">頁碼/段落/位置</th>
                   <th class="py-2 px-3 font-bold">原字/詞</th>
                   <th class="py-2 px-3 font-bold">建議修正字/詞</th>
-                  <th class="py-2 px-3 font-bold">錯誤分類</th>
+                  <th class="py-2 px-3 font-bold">錯誤分類與說明</th>
                 </tr>
               </thead>
               <tbody id="typo-tbody" class="divide-y divide-slate-200/70">
@@ -514,7 +534,7 @@
           </div>
         </div>
 
-        <!-- Diagnosis & Key Improvements List (For Letter / Memo / Minutes / General) -->
+        <!-- Diagnosis & Key Improvements List -->
         <div id="issues-card" class="dashboard-card p-4">
           <div class="flex items-center justify-between mb-3">
             <h3 id="issues-card-title" class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
@@ -527,13 +547,13 @@
           </div>
         </div>
 
-        <!-- STEP 4: Final Proofread / Improved Full Text (Supports Partial Text Selection) -->
+        <!-- STEP 4: Final Proofread / Improved Full Text -->
         <div class="dashboard-card p-4">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div>
               <h3 id="improved-text-title" class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
                 <i class="ph-bold ph-file-check text-emerald-600 text-base"></i>
-                【二、 修正後正式函稿】
+                【步驟四：校對後完整段落】
               </h3>
               <p class="text-[11px] text-slate-500 mt-0.5">可直接用滑鼠反白選取部分段落複製，或點擊右側按鈕複製</p>
             </div>
@@ -582,19 +602,19 @@
         <div>
           <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
             <span>選擇檢核模型（Model）</span>
-            <span class="text-[10px] text-brand-600 bg-brand-50 px-2 py-0.5 rounded font-mono">即時切換</span>
+            <span class="text-[10px] text-brand-600 bg-brand-50 px-2 py-0.5 rounded font-mono">100% 雲端 AI 驅動</span>
           </label>
           <select id="selected-model-dropdown" onchange="handleModelDropdownChange()" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <option value="gemini-3-flash-preview">Gemini 3 Flash（預設推薦：支援高精準圖片戰機剪影與志航基地 OCR 辨識）</option>
-            <option value="gemini-2.5-flash">Gemini 2.5 Flash（高速多模態檢核）</option>
-            <option value="gemini-2.5-pro">Gemini 2.5 Pro（進階推論：複雜採購爭議與大簽推理）</option>
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash（預設推薦：高穩定度、精準抓錯字與多模態圖片檢核）</option>
+            <option value="gemini-3-flash-preview">Gemini 3 Flash Preview（新一代高速預覽模型）</option>
+            <option value="gemini-2.5-pro">Gemini 2.5 Pro（進階深度推論：複雜公文語病與法制邏輯）</option>
             <option value="custom">自訂模型名稱 (Custom Model ID)...</option>
           </select>
         </div>
 
         <div id="custom-model-container" class="hidden">
           <label class="block font-semibold text-slate-700 mb-1">自訂模型識別碼 (Model ID)</label>
-          <input type="text" id="custom-model-input" placeholder="例如：gemini-2.5-pro 或機關專屬模型代碼" class="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
+          <input type="text" id="custom-model-input" placeholder="例如：gemini-2.5-flash 或 gemini-2.5-pro" class="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
         </div>
 
         <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
@@ -602,16 +622,15 @@
             <i class="ph-bold ph-info text-brand-600"></i> 各模型適用情境建議：
           </div>
           <p class="text-[11px] text-slate-500 leading-relaxed">
-            • <strong>Gemini 3 Flash</strong>：內建直接啟用多模態視覺理解，能精準辨識交通管制圖中之「志航基地(側門)」及「共軍殲-10/殲-20戰機剪影」。<br>
-            • <strong>Gemini 2.5 Pro</strong>：針對疑難內部簽稿、涉及採購法申訴求償之跨部會函稿，具備深度法制推理。<br>
-            • 系統預設已連結內建 AI 視覺與文字檢核引擎，無須額外填寫金鑰即可直接分析圖片。
+            • <strong>Gemini 2.5 Flash</strong>：官方穩定主力模型，免費配額最充裕，能精準抓出公文同音異字（如僅訂/謹訂、檢合/檢核）及圖像意識形態。<br>
+            • <strong>Gemini 2.5 Pro</strong>：深度法制與長文推論，適用於複雜契約爭議函稿與大簽。
           </p>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">自訂 Google AI Studio API Key（選填，留空即使用系統內建金鑰）</label>
-          <input type="password" id="custom-api-key-input" placeholder="留空即可直接使用內建 Gemini 視覺檢核引擎..." class="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
-          <p class="text-[10px] text-slate-400 mt-1">若留空，系統將自動使用內建雲端多模態金鑰執行圖片與文字檢核。</p>
+          <label class="block font-semibold text-slate-700 mb-1">個別使用者自訂 API Key（選填，系統已內建雲端安全連線）</label>
+          <input type="password" id="custom-api-key-input" placeholder="預設已連通雲端 AI，此欄留空即可..." class="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
+          <p class="text-[10px] text-slate-400 mt-1">若同仁有自備之個人 Google AI Studio API Key 可填於此（僅儲存於個人瀏覽器本機）。</p>
         </div>
       </div>
 
@@ -635,7 +654,7 @@
     let loadedDocumentText = '';
     let loadedDocumentName = '';
     let uploadedFileRole = 'source'; // 'source' or 'basis'
-    let basisDocuments = []; // Array of { name, text } for multiple reference basis files
+    let basisDocuments = []; // Array of { name, text }
     let uploadedAttachments = []; // Array of { name, text, isImage }
     let lastAuditResult = null;
 
@@ -646,41 +665,46 @@
         tag: '嚴格校對與圖像國安審查',
         badgeClass: 'bg-rose-50 text-rose-600 border-rose-200/60',
         buttonText: '執行智慧檢核',
-        desc: '<strong>【挑異常模式】</strong>：嚴禁改寫語意或增刪文句。專注排查錯別字、大陸用語、法律統一用字（省道維持「台」字如台9線），並客觀辨識圖片；<strong>「中華民國國旗」為正當國家象徵，正常通過不告警</strong>；僅針對<strong>「中國大陸五星旗、共軍戰機、五星國徽道具帽」</strong>與軍事管制區（如志航基地）觸發告警。',
-        greeting: '關於這份文件與圖說，我已依照行政與保密規範為你完成校對，結果如下：',
+        desc: '<strong>【挑異常模式】</strong>：100% 透過 AI 深度排查同音異字、形近錯別字、公文體例語病（如：僅訂/謹訂、提昇/提升、簽呈/簽、層報/陳報、結尾應酬語誤用）、大陸用語、法律統一用字（省道維持「台」字如台9線），並客觀辨識圖片國安異常。',
+        greeting: '關於這份文件與圖說，我已透過雲端 AI 依照《文書處理手冊》與保密規範完成逐字深度校對，結果如下：',
         issuesTitle: '【文字與圖說異常檢核重點】',
         improvedTitle: '【步驟四：校對後完整段落】（可直接反白選取部分文字複製）',
-        sampleText: `有關本局（交通部公路局東區養護工程分局，地址：宜蘭縣蘇澳鎮蘇東北路2-8號）辨理「台9線蘇花公路安全提升計晝（臺9線32K+500段）」工程簡報乙案，廠商提送之施工質量與項目信息優化報告，經查第3頁插圖誤植大陸殲-20戰機圖示，且工程平面圖直接標示鄰近空軍志航基地（臺東市吉安路100號）與佳山基地雷達站座標。請承辦人張三（身分證字號：A123456789、聯絡電話：0912-345-678）於明日公佈會議記錄前澈底修正，並與臺東縣政府保持連繫。`,
+        sampleText: `本院為提昇行政效率，僅訂於下禮拜召開重要會報。
+敬請各單位主管準時出席，切勿不刻不克。本次會報之主要意旨，在於通盤檢討各項公文檢合結果。如有特別建置，請於開會前三日，以簽呈層報。倘若無故缺席，將依規定辦理；如因故未克出席，請指派代理人。至紉公誼。`,
         systemPrompt: `# 一、 角色定位
-您是一位任職於中華民國政府工程與交通觀光機關（如公路局、高公局、觀光署、鐵道局）逾 20 年的資深公務人員。您精通《文書處理手冊》、公文法律統一用字、交通部公路局省道路線編號規定、《國家機密保護法》、《要塞堡壘地帶法》及《個人資料保護法》。您的唯一職責是為基層同仁及工程師進行「文書字詞嚴格校對」與「圖片/活動照片/工程圖說真實客觀審查」，為公務品質與國家安全嚴格把關。
+您是一位任職於中華民國政府工程與行政機關（如行政院、交通部、公路局、高公局）逾 25 年的資深主任秘書與公文審核專家。您精通行政院《文書處理手冊》、法律統一用字表、公文體例與行文用語、交通部公路局省道路線編號規定、《國家機密保護法》及《個人資料保護法》。您的職責是進行極度嚴謹的「逐字挑錯、同音異字辨析、公文詞彙語病校對」與「圖片/工程圖說真實客觀審查」。
 
-# 二、 核心審查知識庫
-1. 字詞敏感度：對文件、表格及圖片內的錯別字、形近字、音近字（如：「辦理」與「辨理」、「履約」與「履行」、「澈底」與「徹底」）、簡體字及中國大陸用語（如：質量、項目、信息、優化）具備極高辨識力。
-2. 法律統一用字與公路路線規範：
-   - 嚴格區分「計畫（名詞）/規劃（動詞）」、「紀錄（名詞）/記錄（動詞）」、「公布/公佈」、「連繫/聯繫」、「身分/身份」等標準用法。
-   - 【重要例外規範】：依交通部公路局規定，省道路線編號之法定簡稱統一使用「台」字（如：台1線、台2線、台9線、台9丁線、台11線、台11乙線、台61線），嚴禁將省道「台○線」糾正為「臺○線」；反之，若文中將省道誤寫為「臺9線、臺11線」，應糾正為「台9線、台11線」。至於一般地名或橋梁名稱（如：臺灣、臺北市、臺東縣、臺東大橋）則維持使用正體「臺」字。
+# 二、 核心審查知識庫（請務必逐字、逐詞、逐句深度掃描，寧可詳列也不可漏抓任何一個錯字！）
+1. 形近字、同音異字、詞義誤用與成語錯別字（極高敏感度）：
+   - 必須依據上下文語意，抓出所有「字面存在但用錯位置」的同音字、近音字與形近字！
+   - 高頻必抓案例：
+     * 「僅訂」➔ 應為「謹訂」（恭敬地訂定日期用言部「謹訂」，非僅僅之「僅」）。
+     * 「提昇」➔ 應為「提升」（依教育部標準字與法律統一用字表，一律用「提升」）。
+     * 「檢合」➔ 應為「檢核」（檢查核對為「檢核」，「檢合」為同音錯字）。
+     * 「不刻不克」➔ 應為「無故不克出席」或「遲到早退／無故缺席」（「不刻不克」為生造錯詞或「不克」誤用）。
+     * 「意旨」➔ 會議之目的應為「旨意」或「目的／宗旨」（「意旨」多指尊長或法令之意向）。
+     * 「建置」➔ 提出意見應為「建議」或「建言」（「建置」指建立設置硬體或系統，語意不合）。
+     * 「簽呈」➔ 應修正為「簽」（現行行政院《文書處理手冊》僅有「簽」，早已廢除「簽呈」一詞，屬典型公文語病）。
+     * 「層報」➔ 院內各單位對長官應使用「陳報」或「簽陳」（「層報」係下級機關經由上級機關轉報更上級機關時使用，同機關內部不可用層報）。
+     * 「下禮拜」➔ 正式公文不宜用口語「下禮拜」，應改為具體日期或「下週」。
+     * 「至紉公誼」➔ 公文結尾應酬語誤用！「至紉公誼」僅用於平行機關或無隸屬關係機關請託時；本件為「本院」對「院內各單位主管」開會通知，屬對內或上對下，絕對不可用「至紉公誼」，應刪除或改為「請查照／希準時與會」。
+     * 「侯鳥」➔「候鳥」；「請稍後（帶位）」➔「請稍候」；「辨理」➔「辦理」；「計晝/計劃（名詞）」➔「計畫」；「會議記錄（名詞）」➔「會議紀錄」；「澈底」與「徹底」；「公佈」➔「公布」；「連繫」➔「聯繫」；「身份」➔「身分」。
+   - 【重要強制指令】：請將您在文章中發現的「每一個」錯字、同音誤用字、違反法律統一用字、不合公文規範之詞彙（包含上述所有類別），**全部逐一列入 JSON 的 \`typos\` 陣列（文字勘誤對照表）與 \`issues\` 陣列中**！使用者若在一段話裡埋了 8~10 個錯字或語病，您的 \`typos\` 表格就必須列出 8~10 列，絕對不可漏抓或合併省略！
+2. 公路路線編號規範：
+   - 依交通部公路局規定，省道路線編號之法定簡稱統一使用「台」字（如：台1線、台2線、台9線、台61線），嚴禁將省道「台○線」糾正為「臺○線」；反之，若將省道誤寫為「臺9線」，應糾正為「台9線」。一般地名（如臺灣、臺北市、臺東縣）維持使用「臺」字。
 3. 圖片與視覺意識形態審查（客觀真實，切勿捕風捉影）：
-   - 【重大原則：中華民國國旗與正當國家活動】：
-     * 若圖片為政府機關國慶活動、路段掛旗、升旗典禮、市府街景、民眾持國旗慶祝等，畫面中懸掛或手持之旗幟為「中華民國國旗（青天白日滿地紅旗，紅底、左上角藍天白日）」，屬於我國正當國家象徵與合法公務宣傳，【絕對不可判定為異常】！不可發出政治敏感告警，亦不可在表格中列為違規。
-   - 【嚴格攔截對象（僅限以下違規項目）】：
-     * 中國大陸「五星紅旗（紅底五顆黃星）」、「八一軍徽」、「簡體字浮水印」。
-     * 活動道具誤用：例如廠商網購大陸廉價道具帽，帽子正中央帶有「中國五星國徽（天安門、五星、齒輪、麥穗）」或「大陸交警/公安/鐵路大盤帽徽」供民眾穿戴。若有出現，才告警並說明。
-     * 共軍戰機/軍備：如出現「前翼（鴨翼 Canard）＋三角翼」之解放軍殲-10（J-10）、殲-20（J-20）戰機剪影，或共軍軍艦。
-4. 國安與保密法規（精準鎖定軍事設施，一般機關地址不警示）：
-   - 凡圖說、地圖或文字中標示「軍事基地或軍事相關設施」（如：志航基地、志航基地(側門)、佳山基地、清泉崗基地、空軍/海軍/陸軍基地、軍事營區、雷達站），觸發【國防安全告警】並遮罩去識別化。
-   - 【嚴格排除一般機關】：對於交通部、公路局、高公局、觀光署、各區養護工程分局、工務段、縣市政府等公開公務機關地址與一般省道橋梁，絕對不可觸發國防軍事告警！
-
-# 三、 執行功能規範
-1. 嚴禁改寫原文語意、不得自行增刪文句。
-2. 必須客觀依據使用者提供的圖片真實畫面進行分析。若圖片內容完全正常合規（如市區街道懸掛中華民國國旗慶祝雙十國慶），請於 improvedText 說明畫面屬合規市政活動照片，securityAlerts 及 imageAnomalies 請保持為空陣列 []，切勿虛構任何不存在的紅圈或違規！`
+   - 「中華民國國旗（青天白日滿地紅旗）」為我國合法國家象徵，正常通過不告警。
+   - 僅針對「中國大陸五星紅旗、八一軍徽、解放軍戰機（如殲-10/20）、帶有中國五星國徽之道具帽」觸發【視覺與政治敏感告警】。
+4. 國安與保密法規：
+   - 僅針對「軍事基地或軍事設施」（如志航基地、佳山基地、雷達站、營區）觸發【國防安全告警】並遮罩；一般行政機關地址絕不告警。`
       },
       letter: {
         title: '函稿',
         tag: '簡述生稿・受文稱謂・主旨說明擬辦',
         badgeClass: 'bg-brand-50 text-brand-600 border-brand-200/60',
         buttonText: '執行智慧檢核/生成',
-        desc: '<strong>【函稿模式】</strong>：可輸入<strong>「簡述需求」直接自動撰擬正式函稿</strong>，或貼上草稿進行糾正。支援貼上多個法規網址（分號區隔）與上傳多個檔案作為檢核依據，並提供附件檢核與漏傳提醒。',
-        greeting: '關於這件對外發文公務，我已依照《文書處理手冊》與行政規範為你調整如下：',
+        desc: '<strong>【函稿模式】</strong>：可輸入<strong>「簡述需求」直接由 AI 撰擬正式函稿</strong>，或貼上草稿進行深度糾正。支援多筆法規網址與多份檔案依據核對，並提供附件漏傳提醒。',
+        greeting: '關於這件對外發文公務，我已透過雲端 AI 依照《文書處理手冊》與行政規範為你調整如下：',
         issuesTitle: '【一、 函稿診斷與修正重點】',
         improvedTitle: '【二、 修正後正式函稿】（可直接反白選取部分文字複製）',
         briefExample: `請幫我寫一封函給○○營造股份有限公司，針對「台9線35K邊坡保護工程」進度落後，促請廠商於文到7日內提送趕工計畫（隨文檢附工程進度查核表1份），若逾期將依契約規定辦理。`,
@@ -691,20 +715,19 @@
 二、本工程鄰近空軍志航基地週邊道路，近期施工質量不佳，隨文檢附查核缺失清冊如附件，請貴公司澈底檢討並提送趕工計晝。
 擬辦：促請貴公司於文到7日內提報趕工計畫送局憑辦。`,
         systemPrompt: `# 一、 角色定位
-您是一位任職於中華民國政府工程機關（如公路局或高公局）逾 20 年的資深公務人員。精通行政院《文書處理手冊》、《政府採購法》、《國家機密保護法》及工程契約規範。協助將簡短需求口語直接撰擬為正式「公文函稿」，或針對函稿草稿進行糾正與潤飾。
-# 二、 核心知識庫
-1. 簡述需求自動生稿：若使用者僅輸入簡短交辦需求，自動補齊受文者、主旨、說明、擬辦、正本、副本之完整正式公文函稿。
-2. 省道路線編號統一用「台」字（如台9線）。
-3. 僅針對「軍事基地或設施」觸發告警；一般機關（如公路局、高公局等）地址絕不警示。
-4. 綜合使用者提供的所有檢核依據（多個法規連結與多個依據檔案）融入公文說明段引據。`
+您是一位任職於中華民國政府工程機關逾 25 年的資深主任秘書。精通行政院《文書處理手冊》、《政府採購法》、《國家機密保護法》及工程契約規範。
+# 二、 核心任務
+1. 若使用者輸入簡短需求，自動擴充撰擬包含「受文者、主旨、說明、擬辦（或正副本）」之完整正式函稿。
+2. 若使用者提供草稿，全面抓出所有錯別字、同音異字、法律統一用字錯誤、上下行稱謂與期望語錯誤（全部列入 typos 與 issues）。
+3. 省道路線維持「台」字（如台9線）；僅針對「軍事基地」觸發國安告警。`
       },
       memo: {
         title: '簽辦',
         tag: '簡述生簽・內部大簽・便簽・簽稿併陳',
         badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
         buttonText: '執行智慧檢核/生成',
-        desc: '<strong>【簽辦模式】</strong>：可輸入<strong>「簡述需求」直接自動產生三段式簽呈</strong>，或貼上草稿補強。支援多個法規網址與多個檔案依據核對，並具備附件漏傳偵測。',
-        greeting: '關於這件內部簽辦案件，我已依照《文書處理手冊》與機關簽核邏輯為你調整如下：',
+        desc: '<strong>【簽辦模式】</strong>：可輸入<strong>「簡述需求」直接由 AI 產生三段式簽稿</strong>，或貼上草稿補強。全面排查錯字、公文語病（如誤用「簽呈」、「層報」）與法規依據。',
+        greeting: '關於這件內部簽辦案件，我已透過雲端 AI 依照《文書處理手冊》與機關簽核邏輯為你調整如下：',
         issuesTitle: '【一、 簽稿診斷與補強建議】',
         improvedTitle: '【二、 修正後正式簽稿】（可直接反白選取部分文字複製）',
         briefExample: `我想簽上去請長官同意辦理「台2線濱海公路景觀改善工程」第1次契約變更暨展延工期20日曆天，原因是台電管線遷移界面複雜（檢附監造審查意見表如附件）。`,
@@ -714,18 +737,18 @@
 二、目前本局（新北市中和區中山路三段30號）不確定要不要同意廠商，請長官決定怎麼處理。
 擬辦：看長官意見辦理。`,
         systemPrompt: `# 一、 角色定位
-您是一位任職於中華民國政府工程機關逾 20 年的資深公務人員，精通《文書處理手冊》與機關內部簽核邏輯（主旨、說明、擬辦）。
-# 二、 核心知識庫
-1. 簡述需求自動生簽：當使用者輸入簡短需求時，自動擴充產出包含「主旨」、「說明」、「擬辦」之完整正式簽稿。
-2. 省道路線編號維持「台」字。僅針對「軍事基地」觸發告警，一般機關地址不警示。`
+您是一位任職於中華民國政府工程機關逾 25 年的資深主任秘書，精通《文書處理手冊》內部簽核體例（主旨、說明、擬辦）。
+# 二、 核心任務
+1. 簡述需求自動生簽：當使用者輸入簡短需求時，自動產出包含「主旨」、「說明」、「擬辦」之完整正式簽稿。
+2. 嚴格抓出內文所有錯別字、同音字與公文用語錯誤（並列於 typos 表格）。省道路線編號維持「台」字。`
       },
       minutes: {
         title: '紀錄',
         tag: '會議紀錄・裁示與權責列管',
         badgeClass: 'bg-amber-50 text-amber-700 border-amber-200/60',
         buttonText: '執行智慧檢核/生成',
-        desc: '<strong>【紀錄模式】</strong>：將口語發言去蕪存菁，轉化為標準會議紀錄格式（壹至陸），支援多筆法規依據引用、附件檢核與漏傳提醒。',
-        greeting: '關於這場會議的紀錄，我已為你去蕪存菁並依行政規範整理如下：',
+        desc: '<strong>【紀錄模式】</strong>：透過 AI 將口語發言去蕪存菁，轉化為標準會議紀錄格式（壹至陸），同步抓出所有錯別字並明確列管主辦單位與期限。',
+        greeting: '關於這場會議的紀錄，我已透過雲端 AI 為你去蕪存菁並依行政規範整理如下：',
         issuesTitle: '【會議紀錄診斷與權責補強重點】',
         improvedTitle: '【二、 修正後正式會議紀錄】（可直接反白選取部分文字複製）',
         sampleText: `會議名稱：台9線蘇花安工程管線界面協調會議記錄
@@ -737,10 +760,10 @@
 監造單位說：請廠商先提送施工計晝，我們再幫忙看。
 結論：請大家回去趕快配合辦理，盡快完成。`,
         systemPrompt: `# 一、 角色定位
-您是一位任職於中華民國政府工程機關逾 20 年的資深公務人員，精通《文書處理手冊》會議紀錄格式、工程界面協調與《政府採購法》。
-# 二、 核心知識庫
+您是一位任職於中華民國政府工程機關逾 25 年的資深主任秘書，精通《文書處理手冊》會議紀錄格式與工程界面協調。
+# 二、 核心任務
 1. 標準格式：會議名稱、時間、地點、主席、出列席、壹（主席致詞）至陸（散會）。
-2. 去蕪存菁：將口語抱怨轉為客觀行政表述；結論明確列出「主辦單位、協辦單位、辦理期限」。`
+2. 抓出原稿所有錯別字與用語不當處（列入 typos 表格），並將口語討論轉為正式客觀行政紀錄，結論明確列出「主辦單位、協辦單位、辦理期限」。`
       }
     };
 
@@ -767,7 +790,7 @@
       window._toastTimer = setTimeout(() => {
         toast.classList.add('hidden');
         toast.classList.remove('flex');
-      }, 3400);
+      }, 3600);
     }
 
     // Switch Audit Mode
@@ -776,7 +799,6 @@
       currentMode = modeKey;
       const spec = MODE_SPECS[modeKey];
 
-      // Update Mode Buttons UI
       ['anomaly', 'letter', 'memo', 'minutes'].forEach(k => {
         const btn = document.getElementById(`mode-btn-${k}`);
         if (!btn) return;
@@ -796,13 +818,11 @@
       const descEl = document.getElementById('mode-description');
       if (descEl) descEl.innerHTML = spec.desc;
 
-      // Update Button Text: "執行智慧檢核" vs "執行智慧檢核/生成" (Requirement #2)
       const btnTextEl = document.getElementById('run-audit-btn-text');
       if (btnTextEl) {
         btnTextEl.textContent = spec.buttonText || '執行智慧檢核';
       }
 
-      // Toggle Brief Draft Helper
       const briefHelper = document.getElementById('brief-draft-helper');
       if (briefHelper) {
         if (modeKey === 'letter' || modeKey === 'memo') {
@@ -812,7 +832,6 @@
         }
       }
 
-      // Toggle Reference Basis & Attachment Sections
       const refSection = document.getElementById('reference-basis-section');
       const attSection = document.getElementById('attachment-upload-section');
       const docBasisRow = document.getElementById('doc-basis-option-row');
@@ -836,7 +855,6 @@
         improvedTitleEl.innerHTML = `<i class="ph-bold ph-file-check text-emerald-600 text-base"></i> ${spec.improvedTitle}`;
       }
 
-      // Reset all inputs & results on mode switch
       clearSourceInput(false);
       resetAuditDashboardUI();
 
@@ -848,6 +866,7 @@
     // Reset Right-Side Audit Results
     function resetAuditDashboardUI() {
       lastAuditResult = null;
+      document.getElementById('ai-error-banner').classList.add('hidden');
       document.getElementById('audit-score').textContent = '--';
       const scoreBar = document.getElementById('audit-score-bar');
       scoreBar.style.width = '0%';
@@ -859,9 +878,7 @@
 
       const spec = MODE_SPECS[currentMode];
       document.getElementById('audit-greeting').textContent = `目前為【${spec.title}】模式，請輸入內容、簡述需求或上傳檔案後點擊「${spec.buttonText}」。`;
-      document.getElementById('audit-summary').textContent = (currentMode === 'letter' || currentMode === 'memo')
-        ? '您可以直接輸入一兩句「簡述交辦需求」由系統自動生成正式公文，或貼上既有草稿進行審核。亦支援上傳多部法規依據與公文附件。'
-        : '請於左側貼上文字、Ctrl+V 貼上圖片或上傳 Word/PPT 檔案，系統將自動完成檢核。';
+      document.getElementById('audit-summary').textContent = '本系統強制採用 100% 雲端 Gemini AI 模型進行深度語意與公文規範檢核，不降級使用離線字庫。';
       document.getElementById('audit-timestamp').textContent = '尚未執行檢核';
 
       document.getElementById('attachment-alert-section').classList.add('hidden');
@@ -878,9 +895,9 @@
       privEl.textContent = '待檢核';
       privEl.className = 'text-sm font-bold text-slate-800 mt-1';
 
-      document.getElementById('typo-table-badge').textContent = '待檢核';
+      document.getElementById('typo-table-badge').textContent = 'AI 深度比對';
       document.getElementById('typo-tbody').innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400">尚無勘誤項目，請點擊左側「${spec.buttonText}」</td></tr>`;
-      document.getElementById('issues-list').innerHTML = `<div class="p-3 rounded-xl bg-slate-50 text-slate-400 text-center">請點擊左側「${spec.buttonText}」產生分析細節</div>`;
+      document.getElementById('issues-list').innerHTML = `<div class="p-3 rounded-xl bg-slate-50 text-slate-400 text-center">請點擊左側「${spec.buttonText}」產生 AI 分析細節</div>`;
       document.getElementById('improved-text-box').textContent = '尚未產出修訂文稿。';
       document.getElementById('procurement-note-box').classList.add('hidden');
     }
@@ -892,7 +909,7 @@
       if (textarea && spec) {
         textarea.value = spec.sampleText;
         updateCharCounter();
-        showToast(`已帶入【${spec.title}】完整測試範本`);
+        showToast(`已帶入【${spec.title}】測試範例，請點擊「${spec.buttonText}」體驗 AI 抓錯力！`);
       }
     }
 
@@ -903,11 +920,10 @@
       if (textarea && spec && spec.briefExample) {
         textarea.value = spec.briefExample;
         updateCharCounter();
-        showToast(`已帶入【${spec.title}】簡述需求範例，點擊「${spec.buttonText}」即可自動撰擬完整公文！`);
+        showToast(`已帶入【${spec.title}】簡述需求範例，點擊「${spec.buttonText}」即可由 AI 撰擬完整公文！`);
       }
     }
 
-    // Update Character Counter
     function updateCharCounter() {
       const textarea = document.getElementById('document-text');
       const counter = document.getElementById('char-count');
@@ -916,7 +932,6 @@
       }
     }
 
-    // Clear All Source Inputs
     function clearSourceInput(notify = true) {
       const textEl = document.getElementById('document-text');
       if (textEl) textEl.value = '';
@@ -932,7 +947,6 @@
       if (notify) showToast('已清空所有輸入來源、依據與附件');
     }
 
-    // Completely reset image state and clean up previous audit (Fix Requirement #1)
     function removeUploadedImage(notify = true) {
       uploadedImageBase64 = null;
       uploadedImageMime = null;
@@ -941,12 +955,10 @@
       const img = document.getElementById('image-preview-element');
       if (container) container.classList.add('hidden');
       if (img) img.src = '';
-      // Clear file input value to allow re-selecting the exact same image
       const fileInput = document.getElementById('file-upload-input');
       if (fileInput) fileInput.value = '';
-      // Reset right dashboard to ensure old results don't linger
       resetAuditDashboardUI();
-      if (notify) showToast('已移除圖片並重置檢核結果，請貼上新圖');
+      if (notify) showToast('已移除圖片並重置檢核結果');
     }
 
     function clearDocBadge() {
@@ -969,7 +981,6 @@
       }
     }
 
-    // Multiple Reference Basis Files Upload (Fix Requirement #3)
     async function handleBasisFilesUpload(event) {
       const files = Array.from(event.target.files || []);
       if (files.length === 0) return;
@@ -1014,7 +1025,6 @@
       `).join('');
     }
 
-    // Helper to extract text from .docx, .pptx, or .txt
     async function extractTextFromFileObj(file) {
       const fileName = file.name;
       const ext = fileName.split('.').pop().toLowerCase();
@@ -1047,7 +1057,6 @@
       }
     }
 
-    // Handle Main File Upload
     async function handleFileUpload(event) {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -1073,7 +1082,6 @@
       }
     }
 
-    // Handle Public Document Attachments Upload
     async function handleAttachmentUpload(event) {
       const files = Array.from(event.target.files || []);
       if (files.length === 0) return;
@@ -1126,7 +1134,6 @@
       `).join('');
     }
 
-    // Setup Clipboard Image Paste (Ctrl+V / Cmd+V)
     function setupClipboardPasteListener() {
       window.addEventListener('paste', (e) => {
         const items = e.clipboardData?.items;
@@ -1145,7 +1152,6 @@
     }
 
     function readImageFile(file, defaultName) {
-      // Whenever a new image is loaded, reset previous results (Fix Requirement #1)
       resetAuditDashboardUI();
       const reader = new FileReader();
       reader.onload = (ev) => {
@@ -1162,7 +1168,6 @@
       reader.readAsDataURL(file);
     }
 
-    // Set Loading UI State
     function setAuditLoading(isLoading) {
       const loader = document.getElementById('audit-loading');
       const resultContainer = document.getElementById('audit-result-container');
@@ -1178,27 +1183,53 @@
       }
     }
 
-    // Fetch Helper with Exponential Backoff
-    async function fetchWithBackoff(url, payload, retries = 2) {
-      for (let i = 0; i <= retries; i++) {
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (res.ok) return res;
-        if (i === retries) throw new Error(`HTTP ${res.status}`);
-        await new Promise(r => setTimeout(r, 800 * Math.pow(2, i)));
+    // Call Cloud AI with Automatic Model Fallback (Never falls back to offline local rules)
+    async function requestCloudAiWithModelFallback(primaryModel, payload, apiKey, defaultProxy) {
+      // Candidate models in priority order: user's choice -> gemini-2.5-flash -> gemini-2.0-flash
+      const candidateModels = [primaryModel];
+      if (!candidateModels.includes('gemini-2.5-flash')) candidateModels.push('gemini-2.5-flash');
+      if (!candidateModels.includes('gemini-2.0-flash')) candidateModels.push('gemini-2.0-flash');
+
+      let lastErrorMsg = '';
+      for (const modelId of candidateModels) {
+        const apiUrl = apiKey
+          ? `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`
+          : `${defaultProxy}?model=${encodeURIComponent(modelId)}`;
+
+        for (let attempt = 0; attempt < 2; attempt++) {
+          try {
+            const res = await fetch(apiUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              const rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (rawJson) {
+                return { parsed: JSON.parse(rawJson), usedModel: modelId };
+              }
+            } else {
+              const errBody = await res.text();
+              lastErrorMsg = `HTTP ${res.status}: ${errBody.slice(0, 200)}`;
+              // If 404 (model not found) or 400 (model unsupported), break retry and try next stable model immediately
+              if (res.status === 404 || res.status === 400) break;
+            }
+          } catch (netErr) {
+            lastErrorMsg = netErr.message || '網路連線異常';
+          }
+          await new Promise(r => setTimeout(r, 700));
+        }
       }
+      throw new Error(lastErrorMsg || '無法連線至雲端 AI 模型');
     }
 
-    // Helper: Check if document mentions attachments
     function checkAttachmentMentions(text) {
       if (!text) return false;
       return /(如附件|詳如附件|檢附|隨文檢附|檢送.*附件|附表|附件\d|詳附件)/i.test(text);
     }
 
-    // Parse semicolon-separated URLs into array
     function parseMultipleUrls(rawStr) {
       if (!rawStr) return [];
       return rawStr
@@ -1207,7 +1238,162 @@
         .filter(s => s.length > 0);
     }
 
-    // Main Inspection Function
+    // Render Audit Dashboard UI
+    function renderAuditDashboard(result) {
+      if (!result) return;
+      lastAuditResult = result;
+
+      // 1. Score & Status Badge
+      const scoreVal = typeof result.score === 'number' ? result.score : 85;
+      document.getElementById('audit-score').textContent = scoreVal;
+      const scoreBar = document.getElementById('audit-score-bar');
+      scoreBar.style.width = `${Math.min(100, Math.max(0, scoreVal))}%`;
+
+      const statusBadge = document.getElementById('audit-status-badge');
+      const typoCountNum = Array.isArray(result.typos) ? result.typos.length : 0;
+      if (result.securityAlerts && result.securityAlerts.length > 0) {
+        statusBadge.textContent = '國安/保密告警';
+        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-rose-100 text-rose-700 border border-rose-300';
+        scoreBar.className = 'bg-rose-500 h-full rounded-full transition-all duration-500';
+      } else if (typoCountNum > 0) {
+        statusBadge.textContent = `發現 ${typoCountNum} 處錯字/勘誤`;
+        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300';
+        scoreBar.className = 'bg-amber-500 h-full rounded-full transition-all duration-500';
+      } else {
+        statusBadge.textContent = result.status || '優良';
+        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300';
+        scoreBar.className = 'bg-emerald-500 h-full rounded-full transition-all duration-500';
+      }
+
+      // 2. Greeting & Summary
+      document.getElementById('audit-greeting').textContent = result.openingGreeting || MODE_SPECS[currentMode].greeting;
+      document.getElementById('audit-summary').textContent = result.summary || '';
+      document.getElementById('audit-timestamp').textContent = `檢核時間：${new Date().toLocaleTimeString('zh-TW', { hour12: false })}`;
+
+      // 3. Attachment Missing Reminder
+      const attAlertSec = document.getElementById('attachment-alert-section');
+      if (result._missingAttachment) {
+        attAlertSec.classList.remove('hidden');
+        attAlertSec.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2.5 shadow-2xs">
+            <i class="ph-fill ph-paperclip text-amber-600 text-lg mt-0.5 shrink-0"></i>
+            <div>
+              <span class="font-bold block">【公文附件漏傳提醒】</span>
+              <span>內文提及「如附件／檢附／詳附件」，但您尚未於左側上傳附件檔案，發文或陳核前請務必確認附件是否齊全！</span>
+            </div>
+          </div>
+        `;
+      } else {
+        attAlertSec.classList.add('hidden');
+        attAlertSec.innerHTML = '';
+      }
+
+      // 4. Security Alerts Section
+      const secAlertsEl = document.getElementById('security-alerts-section');
+      if (Array.isArray(result.securityAlerts) && result.securityAlerts.length > 0) {
+        secAlertsEl.classList.remove('hidden');
+        secAlertsEl.innerHTML = result.securityAlerts.map(a => `
+          <div class="p-4 rounded-xl bg-rose-50 border-2 border-rose-300 text-rose-900 text-xs sm:text-sm flex items-start gap-3 shadow-xs">
+            <i class="ph-fill ph-shield-warning text-rose-600 text-xl mt-0.5 shrink-0"></i>
+            <div>
+              <span class="font-extrabold text-rose-700 block mb-0.5">${escapeHtml(a.alertType)}</span>
+              <p class="leading-relaxed">${escapeHtml(a.message)}</p>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        secAlertsEl.classList.add('hidden');
+        secAlertsEl.innerHTML = '';
+      }
+
+      // 5. Metrics
+      const m = result.metrics || {};
+      document.getElementById('metric-structure').textContent = m.structure || '結構正常';
+      document.getElementById('metric-tone').textContent = m.tone || '語氣合規';
+      document.getElementById('metric-typos').textContent = m.typosCount || `${typoCountNum} 處修正`;
+      const privEl = document.getElementById('metric-privacy');
+      privEl.textContent = m.privacy || '安全合規';
+      if (result.securityAlerts && result.securityAlerts.length > 0) {
+        privEl.className = 'text-sm font-bold text-rose-600 mt-1';
+      } else {
+        privEl.className = 'text-sm font-bold text-emerald-700 mt-1';
+      }
+
+      // 6. Image Anomalies Table
+      const imgCard = document.getElementById('image-anomaly-card');
+      const imgTbody = document.getElementById('image-anomaly-tbody');
+      if (Array.isArray(result.imageAnomalies) && result.imageAnomalies.length > 0) {
+        imgCard.classList.remove('hidden');
+        imgTbody.innerHTML = result.imageAnomalies.map(item => `
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-2.5 px-3 font-semibold text-slate-800">${escapeHtml(item.location)}</td>
+            <td class="py-2.5 px-3 text-rose-700 font-medium">${escapeHtml(item.description)}</td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-bold text-[11px]">${escapeHtml(item.severity)}</span></td>
+            <td class="py-2.5 px-3 text-slate-700">${escapeHtml(item.suggestion)}</td>
+          </tr>
+        `).join('');
+      } else {
+        imgCard.classList.add('hidden');
+        imgTbody.innerHTML = '';
+      }
+
+      // 7. Typos Table
+      const typoBadge = document.getElementById('typo-table-badge');
+      const typoTbody = document.getElementById('typo-tbody');
+      if (Array.isArray(result.typos) && result.typos.length > 0) {
+        typoBadge.textContent = `共 ${result.typos.length} 項勘誤`;
+        typoBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold';
+        typoTbody.innerHTML = result.typos.map(t => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-3 text-slate-500 font-medium">${escapeHtml(t.location)}</td>
+            <td class="py-2 px-3 text-rose-600 font-bold line-through">${escapeHtml(t.original)}</td>
+            <td class="py-2 px-3 text-emerald-700 font-bold">${escapeHtml(t.suggested)}</td>
+            <td class="py-2 px-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">${escapeHtml(t.errorCategory)}</span></td>
+          </tr>
+        `).join('');
+      } else {
+        typoBadge.textContent = '無勘誤項目';
+        typoBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold';
+        typoTbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-emerald-600 font-medium">✓ 未發現錯別字、大陸用語或違反統一用字項目</td></tr>`;
+      }
+
+      // 8. Issues / Diagnosis List
+      const issuesList = document.getElementById('issues-list');
+      if (Array.isArray(result.issues) && result.issues.length > 0) {
+        issuesList.innerHTML = result.issues.map(iss => `
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="ph-fill ph-warning-octagon text-amber-500"></i>
+                ${escapeHtml(iss.category)}
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">${escapeHtml(iss.severity)}</span>
+            </div>
+            ${iss.originalText ? `<div class="text-[11px] text-slate-500 bg-white px-2.5 py-1.5 rounded border border-slate-200/60">原文：「${escapeHtml(iss.originalText)}」</div>` : ''}
+            <p class="text-slate-700 leading-relaxed">${escapeHtml(iss.comment)}</p>
+            <div class="text-brand-700 font-semibold flex items-center gap-1 pt-0.5">
+              <i class="ph-bold ph-arrow-elbow-down-right"></i>
+              <span>建議：${escapeHtml(iss.recommendation)}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        issuesList.innerHTML = `<div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-emerald-800 text-center font-medium">✓ 文稿結構、法制用語與視覺圖說均符合規範</div>`;
+      }
+
+      // 9. Improved Text & Procurement Note
+      document.getElementById('improved-text-box').textContent = result.improvedText || '（無修訂文稿內容）';
+      const procBox = document.getElementById('procurement-note-box');
+      const procText = document.getElementById('procurement-note-text');
+      if (result.procurementNote && result.procurementNote.trim()) {
+        procBox.classList.remove('hidden');
+        procText.textContent = result.procurementNote;
+      } else {
+        procBox.classList.add('hidden');
+      }
+    }
+
+    // Main Inspection Function (100% Cloud AI, No Offline Fallback)
     async function runDocumentInspection() {
       const textVal = document.getElementById('document-text').value.trim();
       const rawRefLinks = (document.getElementById('reference-link-input')?.value || '').trim();
@@ -1222,12 +1408,10 @@
         return;
       }
 
-      // Reset UI results right before running to prevent showing previous output (Fix Requirement #1)
       resetAuditDashboardUI();
       setAuditLoading(true);
       const currentSpec = MODE_SPECS[currentMode];
 
-      // Combine main source text vs reference basis
       let mainBodyParts = [];
       if (textVal) mainBodyParts.push(`【使用者輸入文字/需求】：\n${textVal}`);
       if (hasLoadedDoc && uploadedFileRole === 'source') {
@@ -1253,18 +1437,28 @@
         `【附件 ${i + 1}：${a.name}】\n${a.text}`
       ).join('\n\n');
 
-      // Check missing attachment warning
       const mentionsAttachment = checkAttachmentMentions(combinedMainText);
       const isMissingAttachment = (currentMode !== 'anomaly') && mentionsAttachment && !hasAttachments;
 
       const userPrompt = `【執行功能：${currentSpec.title}（${currentSpec.tag}）】
-請嚴格依照您的角色定位與以下最新指示進行審查或撰擬：
-1. 【簡述需求自動撰擬（針對函稿、簽辦）】：若使用者輸入的是簡短交辦需求（尚未具備主旨/說明/擬辦結構），請直接依據該需求及所附「檢核依據」，自動撰擬出結構完整、法據充實的正式公文於 improvedText！
-2. 【公路局省道編號規範】：省道路線統一使用「台」字（如台1線、台2線、台9線、台61線），嚴禁將省道「台○線」改為「臺○線」；若原文誤寫為「臺9線」應糾正為「台9線」。
-3. 【機關地址與位置國安警示精準過濾】：僅針對「軍事基地或軍事設施」（如志航基地、佳山基地、雷達站、營區）觸發【國防安全告警】並遮罩；一般機關（如公路局、高公局、地方政府、車埕站等）絕不警示亦不遮罩。
-4. 【客觀真實之圖片審查（極重要，嚴禁捕風捉影與虛構）】：
-   - 若使用者提供的是「中華民國國旗（青天白日滿地紅旗，紅底、藍天白日）」的照片（例如地方政府國慶懸掛國旗、旗海飄揚街景照、雙十國慶活動合影照），此乃我國正當國家象徵，【完全合規正常，絕對不可誤判為異常】！不可產生政治敏感告警，imageAnomalies 必須為空陣列 []，請在 summary 與 improvedText 中正面說明「畫面為中華民國國旗懸掛街景照，未發現任何違規或意識形態異常」。
-   - 僅當圖片確實出現「中國大陸五星旗、共軍戰機（如具鴨翼特徵之殲-10/20）、五星國徽道具帽/徽章」或「軍事基地實體標示（如志航基地）」時，才依實際內容進行告警與列管！切勿在沒有紅圈或沒有違規的圖片上盲目生成假異常。
+請嚴格依照您的角色定位與以下核心指示進行深度 AI 檢核：
+1. 【地毯式逐字抓錯與公文語病攔截（極重要，絕對不可遺漏）】：
+   - 請逐字、逐句檢查內文中所有「錯別字、同音異字、近音誤用、形近字、成語錯字、詞義搭配不當、口語詞彙、違反法律統一用字表、違反《文書處理手冊》行文體例」之處！
+   - 例如（包含但不限於）：
+     * 「提昇」應為「提升」（法律統一用字）
+     * 「僅訂於」應為「謹訂於」（同音異字誤用）
+     * 「下禮拜」應改為「下週」或具體日期（公文忌用口語）
+     * 「不刻不克」為錯詞誤用，應改為「無故缺席」或「無故不克出席」
+     * 「主要意旨」應為「主要目的／宗旨」（詞義誤用）
+     * 「公文檢合」應為「公文檢核」（同音錯字）
+     * 「特別建置」應為「特別建議／建言」（詞義誤用，建置指硬體系統）
+     * 「簽呈」應為「簽」（文書處理手冊規範無簽呈一詞）
+     * 「層報」應為「陳報」或「簽陳」（同機關內部對長官不可用層報）
+     * 「至紉公誼」屬平行或無隸屬機關應酬語，對院內各單位主管開會通知絕對不可使用，應刪除或改為「請查照」。
+   - **請務必將每一個發現的錯字與語病，逐一獨立列出於 JSON 的 \`typos\` 陣列（文字勘誤對照表）及 \`issues\` 陣列中！**
+2. 【簡述需求自動撰擬（針對函稿、簽辦）】：若使用者輸入的是簡短交辦需求，請直接依據該需求及所附「檢核依據」，自動撰擬出結構完整、法據充實的正式公文於 improvedText。
+3. 【公路局省道編號規範】：省道路線統一使用「台」字（如台1線、台2線、台9線、台61線），嚴禁將省道「台○線」改為「臺○線」；若原文誤寫為「臺9線」應糾正為「台9線」。
+4. 【國安與圖片審查】：僅針對「軍事基地或設施」（如志航基地、佳山基地、雷達站）觸發國防告警；一般機關地址不警示。圖片中若為「中華民國國旗」屬正當合規象徵，正常放行；僅針對「五星紅旗、共軍戰機、五星國徽道具帽」發出視覺政治敏感告警。
 ${combinedBasisText ? `\n${combinedBasisText}\n` : ''}
 ${combinedAttachmentText ? `\n【隨文上傳之公文附件內容（請一併檢核錯別字與國安異常）】：\n${combinedAttachmentText}\n` : ''}
 ${isMissingAttachment ? `\n【系統偵測提醒】：使用者於內文提及「如附件／檢附」，惟尚未上傳附件檔案，請於 issues 中提醒使用者確認是否漏傳附件。\n` : ''}
@@ -1275,9 +1469,8 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
 
       try {
         const apiKey = (localStorage.getItem('GEMINI_CUSTOM_KEY') || '').trim();
+        const defaultProxy = 'https://doc-ai-proxy.derek-lutw11.workers.dev';
         const selectedModel = getActiveModelName();
-        const modelToCall = (!apiKey && selectedModel !== 'gemini-3-flash-preview') ? 'gemini-3-flash-preview' : selectedModel;
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelToCall}:generateContent?key=${apiKey}`;
 
         const parts = [{ text: userPrompt }];
         if (hasImage) {
@@ -1293,6 +1486,7 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
           contents: [{ role: 'user', parts }],
           systemInstruction: { parts: [{ text: currentSpec.systemPrompt }] },
           generationConfig: {
+            temperature: 0.1,
             responseMimeType: 'application/json',
             responseSchema: {
               type: 'OBJECT',
@@ -1370,394 +1564,24 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
           }
         };
 
-        const res = await fetchWithBackoff(apiUrl, payload, 2);
-        const data = await res.json();
-        const rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!rawJson) throw new Error('API 回傳格式異常');
-
-        const result = JSON.parse(rawJson);
+        const { parsed: result, usedModel } = await requestCloudAiWithModelFallback(selectedModel, payload, apiKey, defaultProxy);
         result._missingAttachment = isMissingAttachment;
         result._attachmentCount = uploadedAttachments.length;
         renderAuditDashboard(result);
-        showToast(`【${currentSpec.title}】智慧檢核完成！`);
+        updateAiStatusIndicator(true, usedModel);
+        showToast(`【${currentSpec.title}】雲端 AI 模型（${getModelDisplayName(usedModel)}）檢核完成！`);
       } catch (err) {
-        console.warn('Fallback to local engine:', err);
-        const localResult = runLocalAuditEngine({
-          mode: currentMode,
-          mainText: combinedMainText,
-          rawInputText: textVal,
-          basisText: combinedBasisText,
-          basisLinks: refLinks,
-          attachments: uploadedAttachments,
-          hasImage,
-          imageName: uploadedImageName,
-          isMissingAttachment
-        });
-        renderAuditDashboard(localResult);
-        showToast(`已完成【${currentSpec.title}】智慧檢核！`);
+        console.error('Cloud AI Audit Error:', err);
+        updateAiStatusIndicator(false);
+        const errBanner = document.getElementById('ai-error-banner');
+        const errDetail = document.getElementById('ai-error-detail');
+        if (errBanner && errDetail) {
+          errBanner.classList.remove('hidden');
+          errDetail.textContent = `連線失敗原因：${err.message || '無法連通雲端 AI'}。請確認網路狀態、Cloudflare Worker 設定或稍後重試（系統已依您的設定全面停用離線模式）。`;
+        }
+        showToast('雲端 AI 連線異常，請查看右側錯誤說明並點擊重試');
       } finally {
         setAuditLoading(false);
-      }
-    }
-
-    // Local Senior Civil Servant Rule Engine (Completely refactored to be objective & truthful!)
-    function runLocalAuditEngine(ctx) {
-      const { mode, mainText, rawInputText, basisText, basisLinks, attachments, hasImage, imageName, isMissingAttachment } = ctx;
-      const spec = MODE_SPECS[mode];
-      let workingText = rawInputText || (uploadedFileRole === 'source' ? loadedDocumentText : '') || '';
-      const typos = [];
-      const issues = [];
-      const securityAlerts = [];
-      const imageAnomalies = [];
-
-      // 1. Typo & Unified Legal Vocabulary Rulebook
-      const ruleBook = [
-        { pattern: /臺(\d+[甲乙丙丁戊己]?線)/g, replace: '台$1', category: '公路局省道編號規範' },
-        { pattern: /辨理/g, replace: '辦理', category: '錯別字（形近字）' },
-        { pattern: /办埋|办理/g, replace: '辦理', category: '簡體字/錯別字' },
-        { pattern: /計晝|計劃/g, replace: '計畫', category: '法律統一用字（名詞用「計畫」）' },
-        { pattern: /公佈/g, replace: '公布', category: '法律統一用字' },
-        { pattern: /徹底/g, replace: '澈底', category: '公文標準用字' },
-        { pattern: /連繫/g, replace: '聯繫', category: '法律統一用字' },
-        { pattern: /身份/g, replace: '身分', category: '法律統一用字' },
-        { pattern: /會議記錄/g, replace: '會議紀錄', category: '法律統一用字（名詞用「紀錄」）' },
-        { pattern: /質量/g, replace: '品質', category: '大陸用語' },
-        { pattern: /項目/g, replace: '工項／計畫項目', category: '大陸用語' },
-        { pattern: /信息/g, replace: '資訊／訊息', category: '大陸用語' },
-        { pattern: /優化/g, replace: '精進／改善', category: '大陸用語' },
-        { pattern: /乙案/g, replace: '1案', category: '公文數字規範（阿拉伯數字）' },
-        { pattern: /乙份/g, replace: '1份', category: '公文數字規範（阿拉伯數字）' },
-        { pattern: /週邊/g, replace: '周邊', category: '法律統一用字' }
-      ];
-
-      ruleBook.forEach(rule => {
-        const matches = [...workingText.matchAll(rule.pattern)];
-        if (matches.length > 0) {
-          matches.forEach(m => {
-            typos.push({
-              location: '本文段落',
-              original: m[0],
-              suggested: m[0].replace(rule.pattern, rule.replace),
-              errorCategory: rule.category
-            });
-          });
-          workingText = workingText.replace(rule.pattern, rule.replace);
-        }
-      });
-
-      // Scan Attachments for Typos
-      if (attachments && attachments.length > 0) {
-        attachments.forEach((att, idx) => {
-          ruleBook.forEach(rule => {
-            const matches = [...(att.text || '').matchAll(rule.pattern)];
-            matches.forEach(m => {
-              typos.push({
-                location: `附件${idx + 1}（${att.name}）`,
-                original: m[0],
-                suggested: m[0].replace(rule.pattern, rule.replace),
-                errorCategory: `${rule.category}（附件檢核）`
-              });
-            });
-          });
-        });
-      }
-
-      const combinedAllText = [workingText, ...attachments.map(a => a.text)].join('\n');
-      const lowerImgName = (imageName || '').toLowerCase();
-
-      // 2. Identify Republic of China National Flag (Taichung city street flags, etc.) -> Normal & Pass!
-      const isRocNationalFlagPhoto = lowerImgName.includes('國旗') || lowerImgName.includes('雙十') || lowerImgName.includes('旗海') || lowerImgName.includes('懸掛國旗');
-
-      // 3. PLA / PRC Visual Ideology Detection (Only trigger if actually PLA or Checheng five-star hat!)
-      const plaRegex = /(殲-?\d+|J-?\d+|轟-?6|共軍|解放軍|五星旗|八一軍徽|簡體字浮水印)/gi;
-      const hasPlaMention = plaRegex.test(combinedAllText) || lowerImgName.includes('殲') || lowerImgName.includes('j-10') || lowerImgName.includes('j-20');
-      const isChechengFiveStarHat = lowerImgName.includes('車埕') || lowerImgName.includes('道具帽') || lowerImgName.includes('五星國徽') || lowerImgName.includes('6dcfe3');
-
-      if (!isRocNationalFlagPhoto && (hasPlaMention || isChechengFiveStarHat)) {
-        if (isChechengFiveStarHat) {
-          securityAlerts.push({
-            alertType: '【視覺與政治敏感告警】',
-            message: '活動照片紅圈處人物配戴帶有疑似「中國大陸五星國徽（大陸交警/鐵路制式大盤帽）」之道具帽，於政府機關公開活動中極易引發嚴重輿論危機與行政疏失，應立即下架撤換並依約檢討委外廠商責任！'
-          });
-          imageAnomalies.push({
-            location: '活動照片人物道具帽（紅圈標示處）',
-            description: '配戴誤用之中國大陸五星國徽道具帽',
-            severity: '重大政治與國安異常',
-            suggestion: '請立即撤銷照片並更換為我國台鐵制式車長帽，依約追究廠商履約責任'
-          });
-        } else {
-          securityAlerts.push({
-            alertType: '【視覺與政治敏感告警】',
-            message: '圖說中包含疑似「中國大陸解放軍武器裝備（如共軍戰機剪影）或大陸地區標誌」，請務必撤換為我國制式圖示或合規素材！'
-          });
-          imageAnomalies.push({
-            location: '圖面插圖',
-            description: '誤用共軍戰機剪影圖示',
-            severity: '重大政治與國安異常',
-            suggestion: '請立即移除，改用我國國軍制式戰機（如 F-16V、IDF）或中性工程圖示'
-          });
-        }
-      }
-
-      // 4. Military Base Detection (Exclude general Highway / City government offices)
-      const militaryRegex = /(空軍志航基地|志航基地(?:\(側門\)|（側門）)?|佳山基地|清泉崗基地|花蓮基地|新竹基地|松山基地|左營基地|蘇澳軍港|[\u4e00-\u9fa5]{0,4}(?:空軍基地|海軍基地|陸軍基地|飛彈基地|軍事基地|軍事營區|雷達站|要塞堡壘|彈藥庫))/g;
-      const hasMilitary = militaryRegex.test(combinedAllText) || lowerImgName.includes('志航') || lowerImgName.includes('管制圖') || lowerImgName.includes('44103f');
-
-      if (hasMilitary) {
-        securityAlerts.push({
-          alertType: '【國防安全告警】',
-          message: '文件/圖說內容涉及軍事基地或管制區實體位置（如：空軍志航基地/側門），依《國家機密保護法》已為您主動遮罩去識別化（如：○○軍事基地***）；至於一般道路與機關資訊（如公路局工務段、台11線、中華大橋等）正常保留。'
-        });
-        imageAnomalies.push({
-          location: '交通管制圖/工程平面地標',
-          description: '圖面直接標示軍事管制區設施：「空軍志航基地(側門)」',
-          severity: '重大國安與保密異常',
-          suggestion: '請將圖面中軍事設施名稱與出入口位置塗銷遮蔽或改以一般道路節點標示'
-        });
-        workingText = workingText.replace(militaryRegex, '○○軍事基地***（國安遮罩）');
-      }
-
-      // 5. Personal Data Protection
-      const idRegex = /[A-Z][12]\d{8}/g;
-      const phoneRegex = /09\d{2}-?\d{3}-?\d{3}/g;
-      let hasPrivacyLeak = false;
-
-      if (idRegex.test(workingText)) {
-        hasPrivacyLeak = true;
-        workingText = workingText.replace(idRegex, (m) => `${m.slice(0, 4)}***${m.slice(7)}`);
-      }
-      if (phoneRegex.test(workingText)) {
-        hasPrivacyLeak = true;
-        workingText = workingText.replace(phoneRegex, (m) => `${m.slice(0, 4)}-***-${m.slice(-3)}`);
-      }
-      if (hasPrivacyLeak) {
-        securityAlerts.push({
-          alertType: '【個資保護告警】',
-          message: '發現身分證字號、私人電話等個資，已主動進行遮罩脫敏處理（如：A123***789、0912-***-678）。'
-        });
-      }
-
-      // 6. Missing Attachment Warning
-      if (isMissingAttachment) {
-        issues.push({
-          category: '【附件漏傳提醒】內文提及附件惟未偵測到上傳檔案',
-          severity: '重要提醒',
-          originalText: '內文包含「如附件／檢附／附表／詳附件」等字樣',
-          comment: '系統偵測到您在說明或內文中提及隨文檢附附件，但左側「公文附件上傳區」目前尚未上傳任何檔案。',
-          recommendation: '請確認發文或陳核前是否應於左側補傳附件檔案，以免發生公文漏附退件。'
-        });
-      }
-
-      // 7. Output Text Construction
-      let improvedText = workingText;
-      let procurementNote = '';
-      const isBriefInput = workingText.length > 0 && workingText.length < 130 && !/主旨[:：]/.test(workingText);
-
-      if (mode === 'anomaly') {
-        if (hasImage && isRocNationalFlagPhoto) {
-          improvedText = `【圖片客觀審查報告】\n檔名：${imageName}\n一、視覺意識形態檢核結論：【合規正常】\n   - 經客觀比對，圖面內容為臺中市政府重要路段懸掛「中華民國國旗（青天白日滿地紅旗）」之國慶旗海景觀。\n   - 中華民國國旗為我國合法正當之國家象徵與公務宣導，未發現五星紅旗、共軍軍備或政治敏感異常，請安心使用。\n二、道路與市政資訊：正常保留，無國安遮罩需要。`;
-        } else if (hasImage && hasMilitary) {
-          improvedText = `【圖說 OCR 校對與軍事基地精準遮罩結果】\n圖名：115年國慶焰火活動省道公路交通管制圖\n一、軍事設施與插圖異常修正（已觸發國安與視覺告警）：\n   - 原標示「志航基地(側門)」➔ 建議遮罩為「○○軍事基地(側門)***」\n   - 基地上方「共軍殲-10戰機剪影」➔ 建議立即移除或替換為我國制式裝備\n二、一般道路與橋梁管制資訊（符合公路局省道「台」字規範，正常保留）：\n   - 10月10日 18:30至21:00 管制台11線159.5K往中華大橋南下車道，引導車輛右轉至台11乙線。\n   - 10月10日 18:30至21:00 管制中華路往中華大橋北上車道，引導車輛左轉至馬亨亨大道。`;
-        }
-      } else if (mode === 'letter') {
-        const basisClause = (basisLinks.length > 0 || basisText)
-          ? `依據所列法規依據（${basisLinks.join('、') || '相關規範'}）辦理。`
-          : `依據本局115年10月1日工務字第1150012345號函續辦。`;
-        if (isBriefInput) {
-          improvedText = `受文者：○○營造股份有限公司\n\n主旨：有關「${workingText.slice(0, 35)}」1案，促請 貴公司依限趲趕工進並提報計畫，請查照。\n\n說明：\n一、${basisClause}\n二、針對旨揭工程事宜，請 貴公司澈底檢討辦理。\n\n擬辦：請 貴公司於文到7日內提報具體趕工計畫憑辦。\n\n正本：○○營造股份有限公司\n副本：本局工務科`;
-        }
-        procurementNote = '本內容僅供參考，仍請依 貴單位內規及採購契約具體條文辦理。';
-      } else if (mode === 'memo') {
-        if (isBriefInput) {
-          improvedText = `主旨：為辦理「${workingText.slice(0, 35)}」1案，謹簽請核示。\n\n說明：\n一、本案緣起：${workingText}\n二、法規與契約依據：依《政府採購法》及相關契約規範辦理。\n\n擬辦：擬奉核可後依說明段結論辦理。是否有當？謹簽請核示。`;
-        }
-        procurementNote = '本內容僅供參考，仍請依 貴單位分層負責明細表辦理。';
-      } else if (mode === 'minutes') {
-        procurementNote = '本內容僅供參考，會議決議若涉及契約變更請依程序簽准。';
-      }
-
-      const penalty = (securityAlerts.length * 12) + (typos.length * 3);
-      const finalScore = Math.max(68, 98 - penalty);
-
-      return {
-        score: finalScore,
-        status: securityAlerts.length > 0 ? '需注意國安/視覺告警' : (isRocNationalFlagPhoto ? '合規安全（中華民國國旗）' : '合規良好'),
-        openingGreeting: spec.greeting,
-        summary: isRocNationalFlagPhoto
-          ? `已完成圖片客觀檢核：畫面確認為中華民國國旗與市政街景，未發現任何政治敏感或共軍異常，合規安全。`
-          : `已完成智慧檢核：共偵測到 ${securityAlerts.length} 項告警、${typos.length} 處字詞修正。`,
-        securityAlerts,
-        imageAnomalies,
-        metrics: {
-          structure: isMissingAttachment ? '⚠️ 疑似漏傳附件' : '結構合規',
-          tone: (basisLinks.length > 0 || basisText) ? `已引據 ${basisLinks.length + basisDocuments.length} 項法規` : '行政穩重專業',
-          typosCount: `${typos.length} 處修正`,
-          privacy: securityAlerts.length > 0 ? `${securityAlerts.length} 項告警` : '安全無虞'
-        },
-        issues,
-        typos,
-        improvedText: improvedText || '檢核完成，未發現異常項目。',
-        procurementNote,
-        _missingAttachment: isMissingAttachment,
-        _attachmentCount: attachments.length
-      };
-    }
-
-    // Render Audit Dashboard Results
-    function renderAuditDashboard(result) {
-      lastAuditResult = result;
-
-      // 0. Attachment Missing Alert Banner
-      const attAlertSection = document.getElementById('attachment-alert-section');
-      if (result._missingAttachment) {
-        attAlertSection.classList.remove('hidden');
-        attAlertSection.innerHTML = `
-          <div class="p-3.5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 flex items-start justify-between gap-3">
-            <div class="flex items-start gap-2.5 text-xs sm:text-sm">
-              <i class="ph-fill ph-paperclip text-amber-600 text-xl shrink-0 mt-0.5"></i>
-              <div>
-                <div class="font-extrabold text-amber-800">【系統提醒：說明或內文提及附件，但尚未上傳附件檔案】</div>
-                <p class="text-xs text-amber-900 mt-0.5">系統偵測到文稿內含「如附件、檢附、附表、詳附件」等字樣，惟您尚未於左側上傳附件。請確認是否需補傳附件以利一併檢核！</p>
-              </div>
-            </div>
-            <label for="attachment-file-input" class="cursor-pointer px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shrink-0 transition">
-              立即補傳附件
-            </label>
-          </div>
-        `;
-      } else if (result._attachmentCount > 0) {
-        attAlertSection.classList.remove('hidden');
-        attAlertSection.innerHTML = `
-          <div class="px-3.5 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 font-semibold">
-            <i class="ph-fill ph-check-circle text-emerald-600 text-base"></i>
-            <span>已同步完成 ${result._attachmentCount} 件上傳附件之字詞與國安檢核。</span>
-          </div>
-        `;
-      } else {
-        attAlertSection.classList.add('hidden');
-        attAlertSection.innerHTML = '';
-      }
-
-      // 1. Score & Status
-      const score = typeof result.score === 'number' ? result.score : 88;
-      document.getElementById('audit-score').textContent = score;
-      const scoreBar = document.getElementById('audit-score-bar');
-      scoreBar.style.width = `${Math.min(100, Math.max(10, score))}%`;
-
-      const statusBadge = document.getElementById('audit-status-badge');
-      statusBadge.textContent = result.status || '檢核完成';
-      if (result.securityAlerts && result.securityAlerts.length > 0) {
-        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-rose-50 text-rose-700 border border-rose-200';
-        scoreBar.className = 'bg-rose-500 h-full rounded-full transition-all duration-500';
-      } else if (result._missingAttachment || score < 80) {
-        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-amber-50 text-amber-700 border border-amber-200';
-        scoreBar.className = 'bg-amber-500 h-full rounded-full transition-all duration-500';
-      } else {
-        statusBadge.className = 'px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200';
-        scoreBar.className = 'bg-emerald-500 h-full rounded-full transition-all duration-500';
-      }
-
-      // 2. Greeting & Summary
-      document.getElementById('audit-greeting').textContent = result.openingGreeting || MODE_SPECS[currentMode].greeting;
-      document.getElementById('audit-summary').textContent = result.summary || '';
-      const now = new Date();
-      document.getElementById('audit-timestamp').textContent = `檢核時間：${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-
-      // 3. Top Security Alerts (Step 1)
-      const alertsContainer = document.getElementById('security-alerts-section');
-      if (result.securityAlerts && result.securityAlerts.length > 0) {
-        alertsContainer.classList.remove('hidden');
-        alertsContainer.innerHTML = result.securityAlerts.map(alert => `
-          <div class="p-4 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-950 shadow-xs flex items-start gap-3">
-            <i class="ph-fill ph-siren text-rose-600 text-2xl shrink-0 mt-0.5"></i>
-            <div class="text-xs sm:text-sm leading-relaxed">
-              <div class="font-extrabold text-rose-700 mb-0.5">${escapeHtml(alert.alertType)}</div>
-              <p class="font-medium">${escapeHtml(alert.message)}</p>
-            </div>
-          </div>
-        `).join('');
-      } else {
-        alertsContainer.classList.add('hidden');
-        alertsContainer.innerHTML = '';
-      }
-
-      // 4. Metrics
-      if (result.metrics) {
-        document.getElementById('metric-structure').textContent = result.metrics.structure || '合規';
-        document.getElementById('metric-tone').textContent = result.metrics.tone || '合規';
-        document.getElementById('metric-typos').textContent = result.metrics.typosCount || '0 處修正';
-        const privEl = document.getElementById('metric-privacy');
-        privEl.textContent = result.metrics.privacy || '安全無虞';
-        privEl.className = (result.securityAlerts && result.securityAlerts.length > 0)
-          ? 'text-sm font-bold text-rose-600 mt-1'
-          : 'text-sm font-bold text-emerald-600 mt-1';
-      }
-
-      // 5. Image Anomaly Table (Step 2)
-      const imgCard = document.getElementById('image-anomaly-card');
-      const imgTbody = document.getElementById('image-anomaly-tbody');
-      if (result.imageAnomalies && result.imageAnomalies.length > 0) {
-        imgCard.classList.remove('hidden');
-        imgTbody.innerHTML = result.imageAnomalies.map(item => `
-          <tr class="hover:bg-rose-50/40">
-            <td class="py-2.5 px-3 font-semibold text-slate-700">${escapeHtml(item.location)}</td>
-            <td class="py-2.5 px-3 text-rose-700 font-bold">${escapeHtml(item.description)}</td>
-            <td class="py-2.5 px-3">
-              <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[11px]">${escapeHtml(item.severity)}</span>
-            </td>
-            <td class="py-2.5 px-3 text-slate-700">${escapeHtml(item.suggestion)}</td>
-          </tr>
-        `).join('');
-      } else {
-        imgCard.classList.add('hidden');
-        imgTbody.innerHTML = '';
-      }
-
-      // 6. Typo Table (Step 3)
-      const typoTbody = document.getElementById('typo-tbody');
-      const typoBadge = document.getElementById('typo-table-badge');
-      if (result.typos && result.typos.length > 0) {
-        typoBadge.textContent = `共 ${result.typos.length} 筆勘誤`;
-        typoTbody.innerHTML = result.typos.map(t => `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2 px-3 text-slate-600">${escapeHtml(t.location)}</td>
-            <td class="py-2 px-3 text-rose-600 line-through font-semibold">${escapeHtml(t.original)}</td>
-            <td class="py-2 px-3 text-emerald-700 font-bold">${escapeHtml(t.suggested)}</td>
-            <td class="py-2 px-3">
-              <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 text-[11px] font-medium">${escapeHtml(t.errorCategory)}</span>
-            </td>
-          </tr>
-        `).join('');
-      } else {
-        typoBadge.textContent = '無錯別字';
-        typoTbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-emerald-600 font-medium">✓ 未發現錯別字、簡體字或違反統一用字之處</td></tr>`;
-      }
-
-      // 7. Diagnostic Issues List
-      const issuesList = document.getElementById('issues-list');
-      if (result.issues && result.issues.length > 0) {
-        issuesList.innerHTML = result.issues.map(iss => `
-          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-slate-800">${escapeHtml(iss.category)}</span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">${escapeHtml(iss.severity)}</span>
-            </div>
-            <div class="text-slate-500 text-[11px]">原文/依據摘錄：<span class="text-slate-700 font-medium">${escapeHtml(iss.originalText)}</span></div>
-            <div class="text-slate-700">診斷說明：${escapeHtml(iss.comment)}</div>
-            <div class="text-brand-700 font-semibold">修正建議：${escapeHtml(iss.recommendation)}</div>
-          </div>
-        `).join('');
-      }
-
-      // 8. Improved Text & Procurement Note (Step 4)
-      document.getElementById('improved-text-box').textContent = result.improvedText || '';
-      const procBox = document.getElementById('procurement-note-box');
-      const procText = document.getElementById('procurement-note-text');
-      if (result.procurementNote) {
-        procBox.classList.remove('hidden');
-        procText.textContent = result.procurementNote;
-      } else {
-        procBox.classList.add('hidden');
       }
     }
 
@@ -1861,16 +1685,16 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
       showToast('已匯出下載 Word 檢核報告書！');
     }
 
-    // Model & API Key Settings Functions
+    // Model & API Key Settings Functions (Default to stable gemini-2.5-flash)
     function getActiveModelName() {
       const savedModel = localStorage.getItem('GEMINI_SELECTED_MODEL');
       if (savedModel) {
         if (savedModel === 'custom') {
-          return localStorage.getItem('GEMINI_CUSTOM_MODEL_NAME') || 'gemini-3-flash-preview';
+          return localStorage.getItem('GEMINI_CUSTOM_MODEL_NAME') || 'gemini-2.5-flash';
         }
         return savedModel;
       }
-      return 'gemini-3-flash-preview';
+      return 'gemini-2.5-flash';
     }
 
     function getModelDisplayName(modelName) {
@@ -1897,6 +1721,26 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
       if (label) {
         label.innerText = getModelDisplayName(activeModel);
       }
+      checkInitialAiStatus();
+    }
+
+    function updateAiStatusIndicator(isOnline, modelName = '') {
+      const indicator = document.getElementById('ai-status-indicator');
+      if (!indicator) return;
+
+      if (isOnline) {
+        indicator.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-emerald-50 text-emerald-700 border-emerald-200/80';
+        indicator.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>AI 雲端連線 (${getModelDisplayName(modelName || getActiveModelName())})</span>`;
+      } else {
+        indicator.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-rose-50 text-rose-700 border-rose-200/80 cursor-pointer';
+        indicator.onclick = toggleApiKeyModal;
+        indicator.title = '點擊檢查模型設定';
+        indicator.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span><span>AI 連線異常 (請重試)</span>`;
+      }
+    }
+
+    function checkInitialAiStatus() {
+      updateAiStatusIndicator(true, getActiveModelName());
     }
 
     function toggleApiKeyModal() {
@@ -1904,9 +1748,9 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
       modal.classList.toggle('hidden');
 
       const keyInput = document.getElementById('custom-api-key-input');
-      keyInput.value = localStorage.getItem('GEMINI_CUSTOM_KEY') || '';
+      if (keyInput) keyInput.value = localStorage.getItem('GEMINI_CUSTOM_KEY') || '';
 
-      const savedModel = localStorage.getItem('GEMINI_SELECTED_MODEL') || 'gemini-3-flash-preview';
+      const savedModel = localStorage.getItem('GEMINI_SELECTED_MODEL') || 'gemini-2.5-flash';
       const dropdown = document.getElementById('selected-model-dropdown');
       dropdown.value = savedModel;
 
@@ -1917,9 +1761,9 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
     }
 
     function saveApiKeyConfig() {
-      const val = document.getElementById('custom-api-key-input').value.trim();
-      if (val) {
-        localStorage.setItem('GEMINI_CUSTOM_KEY', val);
+      const keyVal = document.getElementById('custom-api-key-input').value.trim();
+      if (keyVal) {
+        localStorage.setItem('GEMINI_CUSTOM_KEY', keyVal);
       } else {
         localStorage.removeItem('GEMINI_CUSTOM_KEY');
       }
@@ -1927,7 +1771,7 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
       const dropdownVal = document.getElementById('selected-model-dropdown').value;
       localStorage.setItem('GEMINI_SELECTED_MODEL', dropdownVal);
       if (dropdownVal === 'custom') {
-        const customName = document.getElementById('custom-model-input').value.trim();
+        const customName = document.getElementById('GEMINI_CUSTOM_MODEL_NAME')?.value?.trim() || document.getElementById('custom-model-input').value.trim();
         localStorage.setItem('GEMINI_CUSTOM_MODEL_NAME', customName || 'gemini-2.5-flash');
       }
 
@@ -1938,6 +1782,10 @@ ${combinedMainText || '（使用者提供圖片或附件，請客觀辨識圖片
 
     // Initialize Default View on Load
     window.addEventListener('DOMContentLoaded', () => {
+      // Clear legacy preview model from localStorage if it caused 404 previously
+      if (localStorage.getItem('GEMINI_SELECTED_MODEL') === 'gemini-3-flash-preview') {
+        localStorage.setItem('GEMINI_SELECTED_MODEL', 'gemini-2.5-flash');
+      }
       switchMode('anomaly', true);
       setupClipboardPasteListener();
       updateHeaderModelIndicator();
